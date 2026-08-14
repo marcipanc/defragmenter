@@ -1,0 +1,47 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Example folder
+example/
+
+# Images of disks
+*.img
+
+# Helping files
+manual.md
+navigation.md
+
+# Distribution
+build/
+dist/
+*.egg-info/
+
+# Testing / coverage
+.coverage
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+.nvim/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary
+*.tmp
+
+# Generated compressed files
+*.deflate
+*.gz
+*.zip
