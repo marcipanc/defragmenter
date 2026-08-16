@@ -3,6 +3,9 @@ from dataclasses import dataclass
 
 @dataclass(slots=True, frozen=True)
 class BPB:
+    """The class implements BPB data structure.
+    It includes field common to FAT12, FAT16 and FAT32"""
+
     jump_boot: int
     oem_name: str
     byts_per_sec: int
@@ -20,7 +23,9 @@ class BPB:
 
 
 @dataclass(slots=True, frozen=True)
-class ExtendedFields:
+class BPB_12_16(BPB):
+    """The class implements BPB data structure for FAT12 and FAT16"""
+
     drv_num: int
     reserved_1: int
     boot_sig: int
@@ -30,12 +35,9 @@ class ExtendedFields:
 
 
 @dataclass(slots=True, frozen=True)
-class BPB_12_16(BPB, ExtendedFields):
-    pass
+class BPB_32(BPB):
+    """The class implements BPB data structure for FAT32"""
 
-
-@dataclass(slots=True, frozen=True)
-class BPB_32(BPB, ExtendedFields):
     fats_z32: int
     ext_flags: int
     fs_ver: int
@@ -43,3 +45,9 @@ class BPB_32(BPB, ExtendedFields):
     fs_info: int
     bk_boot_sec: int
     reserved: int
+    drv_num: int
+    reserved_1: int
+    boot_sig: int
+    vol_id: int
+    vol_lab: str
+    fil_sys_type: str
