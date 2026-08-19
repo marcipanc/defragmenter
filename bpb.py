@@ -23,7 +23,7 @@ class BPB:
 
 
 @dataclass(slots=True, frozen=True)
-class BPB_12_16(BPB):
+class FAT1216_BPB(BPB):
     """The class implements BPB data structure for FAT12 and FAT16"""
 
     drv_num: int
@@ -35,7 +35,7 @@ class BPB_12_16(BPB):
 
 
 @dataclass(slots=True, frozen=True)
-class BPB_32(BPB):
+class FAT32_BPB(BPB):
     """The class implements BPB data structure for FAT32"""
 
     fats_z32: int
