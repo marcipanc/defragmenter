@@ -50,6 +50,9 @@ class DiskInfo:
         else:
             fat_type = "FAT32"
 
+        if fat_type != "FAT32":
+            root_clus = -1
+
         return {
             "bytes_per_sec": bps,
             "sec_per_clus": spc,
