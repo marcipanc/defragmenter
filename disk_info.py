@@ -7,15 +7,15 @@ BYTE_ORDER = "little"
 class DiskInfo:
     """The class implements struct for valuable info about disk file system"""
 
-    bytes_per_sec: int
-    sec_per_clus: int
-    fat_start_sector: int
-    fat_size_sectors: int
-    num_fats: int
-    first_data_sector: int
-    root_start_sector: int  # FAT12/16
-    root_clus: int  # FAT32
-    fat_type: str
+    bytes_per_sec: int  # Count of bytes per one sector
+    sec_per_clus: int  # Count of sectors per one cluster
+    fat_start_sector: int  # First sector of FAT table
+    fat_size_sectors: int  # Size of FAT table
+    num_fats: int  # Number of FAT tables
+    first_data_sector: int  # First sector of data
+    root_start_sector: int  # First sector of root dir for FAT12/16
+    root_clus: int  # Root dir cluster for FAT32
+    fat_type: str  # Type of file system
 
     @classmethod
     def parse_boot_sector(cls, sector_0: bytes):
