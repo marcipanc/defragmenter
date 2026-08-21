@@ -18,7 +18,7 @@ class DiskInfo:
     fat_type: str  # Type of file system
 
     @classmethod
-    def parse_boot_sector(cls, sector_0: bytes):
+    def parse_boot_sector(cls, sector_0: bytes) -> "DiskInfo":
         bps = int.from_bytes(sector_0[11:13], BYTE_ORDER)
         spc = sector_0[13]
         rsvd = int.from_bytes(sector_0[14:16], BYTE_ORDER)
@@ -53,7 +53,7 @@ class DiskInfo:
         if fat_type != "FAT32":
             root_clus = -1
 
-        return {
+        data = {
             "bytes_per_sec": bps,
             "sec_per_clus": spc,
             "fat_start_sector": fat_start,
@@ -64,3 +64,5 @@ class DiskInfo:
             "root_clus": root_clus,
             "fat_type": fat_type,
         }
+
+        return cls(**data)
