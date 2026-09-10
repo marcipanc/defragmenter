@@ -1,6 +1,6 @@
 from typing import BinaryIO
 from dataclasses import dataclass
-from constants import BYTE_ORDER, ClusterID
+from src.constants import BYTE_ORDER, ClusterID
 
 
 @dataclass
