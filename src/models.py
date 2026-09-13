@@ -1,4 +1,3 @@
-from typing import BinaryIO
 from dataclasses import dataclass
 from src.constants import BYTE_ORDER, ClusterID
 
@@ -18,7 +17,7 @@ class DiskInfo:
     fat_type: str  # Type of file system
 
     @classmethod
-    def parse_boot_sector(cls, sector_0: bytes) -> "DiskInfo":
+    def from_bytes(cls, sector_0: bytes) -> "DiskInfo":
         bps = int.from_bytes(sector_0[11:13], BYTE_ORDER)
         spc = sector_0[13]
         rsvd = int.from_bytes(sector_0[14:16], BYTE_ORDER)
@@ -104,3 +103,50 @@ class FsEntryTable:
 
     def __contains__(self, id: ClusterID) -> bool:
         return id in self._entries
+
+
+@dataclass
+class DirEntry:
+    """The class implements general direcory entry data structure"""
+
+    name: bytes  # Short name in 8.3 format
+    ext: bytes  # Extention in 8.3 format
+    attr: int  # File attribute
+    first_cluster_high: int  # High word of cluster number (for FAT32)
+    first_cluster_low: int  # Low word of cluster number (for FAT12/16)
+    size: int  # Size of file in bytes
+
+    @classmethod
+    def from_bytes(cls, entry: bytes):
+        if len(entry) > 32:
+            raise ValueError("Entry size must be equal to 32")
+
+        return cls(
+            name=entry[:8],
+            ext=entry[8:11],
+            attr=entry[11],
+            first_cluster_high=int.from_bytes(entry[20:22], BYTE_ORDER),
+            first_cluster_low=int.from_bytes(entry[26:28], BYTE_ORDER),
+            size=int.from_bytes(entry[28:32], byteorder="little"),
+        )
+
+    @property
+    def is_empty(self):
+        return self.name[0] == 0x00
+
+    @property
+    def is_deleted(self):
+        return self.name[0] == 0xE5
+
+    @property
+    def is_dir(self):
+        return self.attr == 0x10
+
+    @property
+    def is_dot_entry(self):
+        return self.name.startswith(b".")
+
+    def get_start_cluster(self, is_fat32: bool):
+        if is_fat32:
+            return (self.first_cluster_high << 16) | self.first_cluster_low
+        return self.first_cluster_low
