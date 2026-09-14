@@ -118,7 +118,7 @@ class DirEntry:
 
     @classmethod
     def from_bytes(cls, entry: bytes):
-        if len(entry) > 32:
+        if len(entry) != 32:
             raise ValueError("Entry size must be equal to 32")
 
         return cls(
